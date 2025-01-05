@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 class ParentAuthController extends Controller
 {
@@ -32,9 +33,9 @@ class ParentAuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout(): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        request()->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Logged out successfully'

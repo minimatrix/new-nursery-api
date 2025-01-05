@@ -6,13 +6,13 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SuperAdminAccess
+class CheckUserType
 {
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string $type): Response
     {
-        if (request()->user()->type !== 'super_admin') {
+        if (request()->user()->type !== $type) {
             return response()->json([
-                'message' => 'Unauthorized. Super admin access required.'
+                'message' => 'Unauthorized. ' . ucfirst($type) . ' access required.'
             ], 403);
         }
 

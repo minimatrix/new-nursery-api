@@ -12,12 +12,6 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class PricingBandController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-        $this->middleware('user.type:staff');
-    }
-
     public function index(): AnonymousResourceCollection
     {
         $pricingBands = PricingBand::orderBy('min_age_months')->get();
@@ -29,7 +23,7 @@ class PricingBandController extends Controller
         $this->authorize('create', PricingBand::class);
 
         $pricingBand = PricingBand::create([
-            'nursery_id' => auth()->user()->nursery_id,
+            'nursery_id' => request()->user()->nursery_id,
             ...$request->validated()
         ]);
 

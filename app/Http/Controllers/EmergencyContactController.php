@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EmergencyContact\StoreRequest;
-use App\Http\Requests\EmergencyContact\UpdateRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Parent\EmergencyContact\StoreRequest;
+use App\Http\Requests\Parent\EmergencyContact\UpdateRequest;
 use App\Models\Child;
 use App\Models\EmergencyContact;
 use Illuminate\Http\JsonResponse;

@@ -41,7 +41,7 @@ class StoreRequest extends FormRequest
         return [
             function ($validator) {
                 // Check for overlapping age ranges in the same nursery
-                $overlapping = \App\Models\PricingBand::where('nursery_id', auth()->user()->nursery_id)
+                $overlapping = \App\Models\PricingBand::where('nursery_id', $this->user()->nursery_id)
                     ->where(function ($query) {
                         $query->whereBetween('min_age_months', [$this->min_age_months, $this->max_age_months])
                             ->orWhereBetween('max_age_months', [$this->min_age_months, $this->max_age_months]);

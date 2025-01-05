@@ -78,7 +78,7 @@ class UserController extends Controller
         }
 
         // Prevent self-deletion
-        if ($superAdmin->id === auth()->id()) {
+        if ($superAdmin->id === request()->user()->id) {
             return response()->json([
                 'message' => 'Cannot delete your own account'
             ], 422);

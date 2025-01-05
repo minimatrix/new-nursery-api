@@ -11,15 +11,17 @@ use Illuminate\Http\JsonResponse;
 
 class EmergencyContactController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-        $this->middleware('user.type:parent');
-    }
-
     public function store(StoreRequest $request, Child $child): JsonResponse
     {
         $this->authorize('update', $child);
+
+        $contact = EmergencyContact::where('user_id', request()->user()->id)
+            ->where('child_id', $child->id)
+            ->first();
+
+        if ($contact) {
+            return response()->json(['message' => 'Emergency contact already exists'], 400);
+        }
 
         $contact = $child->emergencyContacts()->create($request->validated());
 

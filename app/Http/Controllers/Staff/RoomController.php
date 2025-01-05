@@ -16,17 +16,11 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class RoomController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-        $this->middleware('user.type:staff');
-    }
-
     public function index(): AnonymousResourceCollection
     {
-        $rooms = auth()->user()->is_admin
+        $rooms = request()->user()->is_admin
             ? Room::with(['staff', 'children'])->get()
-            : auth()->user()->rooms()->with(['staff', 'children'])->get();
+            : request()->user()->rooms()->with(['staff', 'children'])->get();
 
         return RoomResource::collection($rooms);
     }
@@ -36,7 +30,7 @@ class RoomController extends Controller
         $this->authorize('create', Room::class);
 
         $room = Room::create([
-            'nursery_id' => auth()->user()->nursery_id,
+            'nursery_id' => request()->user()->nursery_id,
             ...$request->validated()
         ]);
 

@@ -12,12 +12,7 @@ use Exception;
 
 class SubscriptionController extends Controller
 {
-    public function __construct(private StripeService $stripeService)
-    {
-        $this->middleware('auth:sanctum');
-        $this->middleware('user.type:staff');
-        $this->middleware('admin');
-    }
+    public function __construct(private StripeService $stripeService) {}
 
     public function availablePlans(): JsonResponse
     {
@@ -29,7 +24,7 @@ class SubscriptionController extends Controller
 
     public function createSetupIntent(): JsonResponse
     {
-        $nursery = auth()->user()->nursery;
+        $nursery = request()->user()->nursery;
 
         if (!$nursery->stripe_customer_id) {
             $nursery->stripe_customer_id = $this->stripeService->createCustomer($nursery);
@@ -50,7 +45,7 @@ class SubscriptionController extends Controller
             'payment_method_id' => ['required', 'string']
         ]);
 
-        $nursery = auth()->user()->nursery;
+        $nursery = request()->user()->nursery;
         $plan = SubscriptionPlan::findOrFail($request->plan_id);
 
         try {
@@ -75,7 +70,7 @@ class SubscriptionController extends Controller
 
     public function cancel(): JsonResponse
     {
-        $nursery = auth()->user()->nursery;
+        $nursery = request()->user()->nursery;
 
         if (!$nursery->stripe_subscription_id) {
             return response()->json([

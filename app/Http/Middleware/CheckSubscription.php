@@ -9,7 +9,7 @@ class CheckSubscription
 {
     public function handle(Request $request, Closure $next, string ...$features)
     {
-        $user = auth()->user();
+        $user = request()->user();
 
         if (!$user || !$user->nursery || !$user->nursery->hasActiveSubscription()) {
             return response()->json([

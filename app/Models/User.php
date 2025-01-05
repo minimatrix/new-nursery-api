@@ -17,7 +17,7 @@ class User extends Authenticatable
     {
         static::addGlobalScope(new NurseryScope);
         static::addGlobalScope(function ($builder) {
-            if (auth()->check() && auth()->user()->type === 'super_admin') {
+            if (request()->user() && request()->user()->type === 'super_admin') {
                 return $builder;
             }
         });

@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\StaffPasswordResetController;
 use App\Http\Controllers\Auth\ParentPasswordResetController;
 use App\Http\Controllers\Auth\SuperAdminAuthController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\Staff;
 use Illuminate\Support\Facades\Route;
 
 // Test route to verify API is working
@@ -61,7 +62,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 // Staff Routes
 Route::prefix('staff')->middleware(['auth:sanctum', 'user.type:staff'])->group(function () {
     // Child Management
-    Route::apiResource('children', Staff\ChildController::class);
+    Route::apiResource('children', \App\Http\Controllers\Staff\ChildController::class);
     // Pricing Bands
     Route::apiResource('pricing-bands', Staff\PricingBandController::class);
 
@@ -81,20 +82,20 @@ Route::prefix('staff')->middleware(['auth:sanctum', 'user.type:staff'])->group(f
 // Parent Routes
 Route::prefix('parent')->middleware(['auth:sanctum', 'user.type:parent'])->group(function () {
     // Child Management (limited access)
-    Route::get('children', [Parent\ChildController::class, 'index']);
-    Route::get('children/{child}', [Parent\ChildController::class, 'show']);
-    Route::patch('children/{child}', [Parent\ChildController::class, 'update']);
+    Route::get('children', [\App\Http\Controllers\Parent\ChildController::class, 'index']);
+    Route::get('children/{child}', [\App\Http\Controllers\Parent\ChildController::class, 'show']);
+    Route::patch('children/{child}', [\App\Http\Controllers\Parent\ChildController::class, 'update']);
 
     Route::prefix('children/{child}')->group(function () {
         // Health Information
-        Route::post('/allergies', [Parent\ChildHealthController::class, 'updateAllergies']);
-        Route::post('/dietary-requirements', [Parent\ChildHealthController::class, 'updateDietaryRequirements']);
-        Route::post('/immunisations', [Parent\ChildHealthController::class, 'updateImmunisations']);
+        Route::post('/allergies', [\App\Http\Controllers\Parent\ChildHealthController::class, 'updateAllergies']);
+        Route::post('/dietary-requirements', [\App\Http\Controllers\Parent\ChildHealthController::class, 'updateDietaryRequirements']);
+        Route::post('/immunisations', [\App\Http\Controllers\Parent\ChildHealthController::class, 'updateImmunisations']);
 
         // Emergency Contacts
-        Route::post('/emergency-contacts', [Parent\EmergencyContactController::class, 'store']);
-        Route::put('/emergency-contacts/{contact}', [Parent\EmergencyContactController::class, 'update']);
-        Route::delete('/emergency-contacts/{contact}', [Parent\EmergencyContactController::class, 'destroy']);
+        Route::post('/emergency-contacts', [\App\Http\Controllers\Parent\EmergencyContactController::class, 'store']);
+        Route::put('/emergency-contacts/{contact}', [\App\Http\Controllers\Parent\EmergencyContactController::class, 'update']);
+        Route::delete('/emergency-contacts/{contact}', [\App\Http\Controllers\Parent\EmergencyContactController::class, 'destroy']);
     });
 });
 
@@ -106,18 +107,18 @@ Route::prefix('super-admin')->group(function () {
         Route::post('/logout', [SuperAdminAuthController::class, 'logout']);
 
         // Add routes for managing nurseries
-        Route::get('/nurseries', [SuperAdmin\NurseryController::class, 'index']);
-        Route::get('/nurseries/{nursery}', [SuperAdmin\NurseryController::class, 'show']);
+        Route::get('/nurseries', [\App\Http\Controllers\SuperAdmin\NurseryController::class, 'index']);
+        Route::get('/nurseries/{nursery}', [\App\Http\Controllers\SuperAdmin\NurseryController::class, 'show']);
 
         // Super Admin User Management
-        Route::get('/users', [SuperAdmin\UserController::class, 'index']);
-        Route::post('/users', [SuperAdmin\UserController::class, 'store']);
-        Route::get('/users/{superAdmin}', [SuperAdmin\UserController::class, 'show']);
-        Route::put('/users/{superAdmin}', [SuperAdmin\UserController::class, 'update']);
-        Route::delete('/users/{superAdmin}', [SuperAdmin\UserController::class, 'destroy']);
+        Route::get('/users', [\App\Http\Controllers\SuperAdmin\UserController::class, 'index']);
+        Route::post('/users', [\App\Http\Controllers\SuperAdmin\UserController::class, 'store']);
+        Route::get('/users/{superAdmin}', [\App\Http\Controllers\SuperAdmin\UserController::class, 'show']);
+        Route::put('/users/{superAdmin}', [\App\Http\Controllers\SuperAdmin\UserController::class, 'update']);
+        Route::delete('/users/{superAdmin}', [\App\Http\Controllers\SuperAdmin\UserController::class, 'destroy']);
 
         // Subscription Plan Management
-        Route::apiResource('subscription-plans', SuperAdmin\SubscriptionPlanController::class);
+        Route::apiResource('subscription-plans', \App\Http\Controllers\SuperAdmin\SubscriptionPlanController::class);
     });
 });
 

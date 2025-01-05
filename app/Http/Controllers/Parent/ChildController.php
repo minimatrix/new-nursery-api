@@ -11,16 +11,10 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ChildController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-        $this->middleware('user.type:parent');
-    }
-
     public function index(): AnonymousResourceCollection
     {
         $children = Child::whereHas('guardians', function ($query) {
-            $query->where('user_id', auth()->id());
+            $query->where('user_id', request()->user()->id);
         })->with(['guardians', 'allergies', 'dietaryRequirements', 'immunisations'])
             ->get();
 

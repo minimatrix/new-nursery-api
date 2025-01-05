@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateChildAllergyRequest;
-use App\Http\Requests\UpdateChildDietaryRequest;
-use App\Http\Requests\UpdateChildImmunisationRequest;
+use App\Http\Requests\Parent\UpdateChildDietaryRequest;
+use App\Http\Requests\Parent\UpdateChildImmunisationRequest;
 use App\Models\Child;
 use Illuminate\Http\JsonResponse;
 

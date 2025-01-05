@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class StaffAuthController extends Controller
@@ -29,9 +30,9 @@ class StaffAuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout(): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        request()->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Logged out successfully'

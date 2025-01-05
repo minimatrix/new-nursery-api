@@ -11,12 +11,6 @@ use Illuminate\Http\JsonResponse;
 
 class ChildHealthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-        $this->middleware('user.type:parent');
-    }
-
     public function updateAllergies(UpdateChildAllergyRequest $request, Child $child): JsonResponse
     {
         $this->authorize('update', $child);
@@ -46,6 +40,7 @@ class ChildHealthController extends Controller
         $this->authorize('update', $child);
 
         $child->immunisations()->sync($request->immunisations);
+
 
         return response()->json([
             'message' => 'Immunisations updated successfully',
