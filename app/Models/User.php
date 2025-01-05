@@ -46,4 +46,11 @@ class User extends Authenticatable
     {
         return $query->where('nursery_id', $nurseryId);
     }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class, 'room_staff')
+            ->withPivot('is_room_leader')
+            ->withTimestamps();
+    }
 }

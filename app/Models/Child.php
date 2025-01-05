@@ -12,6 +12,7 @@ class Child extends Model
 
     protected $fillable = [
         'nursery_id',
+        'room_id',
         'first_name',
         'last_name',
         'date_of_birth',
@@ -62,5 +63,10 @@ class Child extends Model
         return $this->belongsToMany(Immunisation::class, 'child_immunisation')
             ->withPivot(['date_given', 'date_due', 'notes'])
             ->withTimestamps();
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
     }
 }
