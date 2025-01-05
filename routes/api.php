@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\StaffAuthController;
 use App\Http\Controllers\Auth\ParentAuthController;
 use App\Http\Controllers\ChildHealthController;
 use App\Http\Controllers\EmergencyContactController;
+use App\Http\Controllers\Auth\StaffPasswordResetController;
+use App\Http\Controllers\Auth\ParentPasswordResetController;
 use Illuminate\Support\Facades\Route;
 
 // Test route to verify API is working
@@ -18,6 +20,8 @@ Route::post('/nursery/register', [NurseryController::class, 'register']);
 // Staff authentication routes
 Route::prefix('staff')->group(function () {
     Route::post('/login', [StaffAuthController::class, 'login']);
+    Route::post('/forgot-password', [StaffPasswordResetController::class, 'forgotPassword']);
+    Route::post('/reset-password', [StaffPasswordResetController::class, 'resetPassword']);
 
     Route::middleware(['auth:sanctum', 'user.type:staff'])->group(function () {
         Route::post('/logout', [StaffAuthController::class, 'logout']);
@@ -28,6 +32,8 @@ Route::prefix('staff')->group(function () {
 // Parent authentication routes
 Route::prefix('parent')->group(function () {
     Route::post('/login', [ParentAuthController::class, 'login']);
+    Route::post('/forgot-password', [ParentPasswordResetController::class, 'forgotPassword']);
+    Route::post('/reset-password', [ParentPasswordResetController::class, 'resetPassword']);
 
     Route::middleware(['auth:sanctum', 'user.type:parent'])->group(function () {
         Route::post('/logout', [ParentAuthController::class, 'logout']);
