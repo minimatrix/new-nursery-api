@@ -8,6 +8,7 @@ use App\Http\Controllers\EmergencyContactController;
 use App\Http\Controllers\Auth\StaffPasswordResetController;
 use App\Http\Controllers\Auth\ParentPasswordResetController;
 use App\Http\Controllers\Auth\SuperAdminAuthController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 // Test route to verify API is working
@@ -115,6 +116,10 @@ Route::prefix('super-admin')->group(function () {
         Route::put('/users/{superAdmin}', [SuperAdmin\UserController::class, 'update']);
         Route::delete('/users/{superAdmin}', [SuperAdmin\UserController::class, 'destroy']);
 
-        // We'll add subscription plan management routes here later
+        // Subscription Plan Management
+        Route::apiResource('subscription-plans', SuperAdmin\SubscriptionPlanController::class);
     });
 });
+
+// Stripe Webhook
+Route::post('webhook/stripe', [WebhookController::class, 'handleStripeWebhook']);
