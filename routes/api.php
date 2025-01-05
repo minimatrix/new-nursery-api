@@ -7,6 +7,7 @@ use App\Http\Controllers\ChildHealthController;
 use App\Http\Controllers\EmergencyContactController;
 use App\Http\Controllers\Auth\StaffPasswordResetController;
 use App\Http\Controllers\Auth\ParentPasswordResetController;
+use App\Http\Controllers\Auth\SuperAdminAuthController;
 use Illuminate\Support\Facades\Route;
 
 // Test route to verify API is working
@@ -93,5 +94,27 @@ Route::prefix('parent')->middleware(['auth:sanctum', 'user.type:parent'])->group
         Route::post('/emergency-contacts', [Parent\EmergencyContactController::class, 'store']);
         Route::put('/emergency-contacts/{contact}', [Parent\EmergencyContactController::class, 'update']);
         Route::delete('/emergency-contacts/{contact}', [Parent\EmergencyContactController::class, 'destroy']);
+    });
+});
+
+// Super Admin Routes
+Route::prefix('super-admin')->group(function () {
+    Route::post('/login', [SuperAdminAuthController::class, 'login']);
+
+    Route::middleware(['auth:sanctum', 'super_admin'])->group(function () {
+        Route::post('/logout', [SuperAdminAuthController::class, 'logout']);
+
+        // Add routes for managing nurseries
+        Route::get('/nurseries', [SuperAdmin\NurseryController::class, 'index']);
+        Route::get('/nurseries/{nursery}', [SuperAdmin\NurseryController::class, 'show']);
+
+        // Super Admin User Management
+        Route::get('/users', [SuperAdmin\UserController::class, 'index']);
+        Route::post('/users', [SuperAdmin\UserController::class, 'store']);
+        Route::get('/users/{superAdmin}', [SuperAdmin\UserController::class, 'show']);
+        Route::put('/users/{superAdmin}', [SuperAdmin\UserController::class, 'update']);
+        Route::delete('/users/{superAdmin}', [SuperAdmin\UserController::class, 'destroy']);
+
+        // We'll add subscription plan management routes here later
     });
 });

@@ -16,6 +16,11 @@ class User extends Authenticatable
     protected static function booted()
     {
         static::addGlobalScope(new NurseryScope);
+        static::addGlobalScope(function ($builder) {
+            if (auth()->check() && auth()->user()->type === 'super_admin') {
+                return $builder;
+            }
+        });
     }
 
     protected $fillable = [
@@ -58,5 +63,10 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token, $this->type));
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->type === 'super_admin';
     }
 }
