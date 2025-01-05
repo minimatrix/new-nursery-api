@@ -27,11 +27,11 @@ class StaffPasswordResetController extends Controller
 
         $token = Password::createToken($user);
 
-        // Here you would typically send an email with the reset link
-        // For now, we'll return the token in the response
+        // Send the password reset notification
+        $user->sendPasswordResetNotification($token);
+
         return response()->json([
-            'message' => 'Password reset link sent successfully',
-            'token' => $token // Remove this in production
+            'message' => 'Password reset link sent successfully'
         ]);
     }
 
