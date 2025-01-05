@@ -18,10 +18,12 @@ class Child extends Model
         'date_of_birth',
         'gender',
         'notes',
+        'grant_eligible',
     ];
 
     protected $casts = [
         'date_of_birth' => 'date',
+        'grant_eligible' => 'boolean',
     ];
 
     public function nursery()
@@ -68,5 +70,15 @@ class Child extends Model
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function getCurrentPricingBand(): ?PricingBand
+    {
+        $ageInMonths = $this->date_of_birth->diffInMonths(now());
+
+        return PricingBand::where('nursery_id', $this->nursery_id)
+            ->where('min_age_months', '<=', $ageInMonths)
+            ->where('max_age_months', '>=', $ageInMonths)
+            ->first();
     }
 }

@@ -60,6 +60,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::prefix('staff')->middleware(['auth:sanctum', 'user.type:staff'])->group(function () {
     // Child Management
     Route::apiResource('children', Staff\ChildController::class);
+    // Pricing Bands
+    Route::apiResource('pricing-bands', Staff\PricingBandController::class);
 
     Route::prefix('children/{child}')->group(function () {
         // Health Information
