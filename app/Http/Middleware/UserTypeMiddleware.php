@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckUserType
+class UserTypeMiddleware
 {
     /**
      * Handle an incoming request.

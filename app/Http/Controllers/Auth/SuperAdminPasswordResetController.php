@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PasswordResetMail;
 
-class StaffPasswordResetController extends Controller
+class SuperAdminPasswordResetController extends Controller
 {
     public function forgotPassword(Request $request)
     {
@@ -19,12 +19,12 @@ class StaffPasswordResetController extends Controller
         ]);
 
         $user = User::where('email', $request->email)
-            ->where('type', 'staff')
+            ->where('type', 'super_admin')
             ->first();
 
         if (!$user) {
             return response()->json([
-                'message' => 'We cannot find a staff member with that email address.'
+                'message' => 'We cannot find a super admin with that email address.'
             ], 404);
         }
 
@@ -56,7 +56,7 @@ class StaffPasswordResetController extends Controller
         ]);
 
         $user = User::where('email', $request->email)
-            ->where('type', 'staff')
+            ->where('type', 'super_admin')
             ->first();
 
         if (!$user) {
@@ -85,7 +85,7 @@ class StaffPasswordResetController extends Controller
         $user->tokens()->delete();
 
         // Create new access token
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $token = $user->createToken('auth-token', ['*'])->plainTextToken;
 
         return response()->json([
             'message' => 'Password reset successfully.',

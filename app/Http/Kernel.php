@@ -7,11 +7,11 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     /**
-     * The application's route middleware.
+     * The application's global HTTP middleware stack.
      *
-     * These middleware may be assigned to groups or used individually.
+     * These middleware are run during every request to your application.
      *
-     * @var array<string, class-string|string>
+     * @var array<int, class-string|string>
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
@@ -46,9 +46,9 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's route middleware aliases.
+     * The application's middleware aliases.
      *
-     * Aliases may be used instead of class names to assign middleware to groups or used individually.
+     * Aliases may be used instead of class names to conveniently assign middleware to routes and groups.
      *
      * @var array<string, class-string|string>
      */
@@ -63,7 +63,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'user.type' => \App\Http\Middleware\CheckUserType::class,
         'super_admin' => \App\Http\Middleware\SuperAdminAccess::class,
         'subscribed' => \App\Http\Middleware\CheckSubscription::class,
     ];

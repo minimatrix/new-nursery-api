@@ -11,6 +11,26 @@ use App\Http\Controllers\Auth\SuperAdminAuthController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\Staff;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\SuperAdminPasswordResetController;
+
+// Define middleware groups at the top of the file
+Route::middlewareGroup('staff', ['auth:sanctum', function ($request, $next) {
+    if ($request->user()->type !== 'staff') {
+        return response()->json([
+            'message' => 'Unauthorized. Staff access required.'
+        ], 403);
+    }
+    return $next($request);
+}]);
+
+Route::middlewareGroup('parent', ['auth:sanctum', function ($request, $next) {
+    if ($request->user()->type !== 'parent') {
+        return response()->json([
+            'message' => 'Unauthorized. Parent access required.'
+        ], 403);
+    }
+    return $next($request);
+}]);
 
 // Test route to verify API is working
 Route::get('/test', function () {
@@ -119,6 +139,9 @@ Route::prefix('super-admin')->group(function () {
 
         // Subscription Plan Management
         Route::apiResource('subscription-plans', \App\Http\Controllers\SuperAdmin\SubscriptionPlanController::class);
+
+        Route::post('/forgot-password', [SuperAdminPasswordResetController::class, 'forgotPassword']);
+        Route::post('/reset-password', [SuperAdminPasswordResetController::class, 'resetPassword']);
     });
 });
 
